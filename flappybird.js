@@ -6,8 +6,8 @@ let boardHeight = 640;
 let context;
 
 //bird
-let birdWidth = 34; //width/height ratio = 408/228 = 17/12
-let birdHeight = 24;
+let birdWidth = 70; //width/height ratio = 408/228 = 17/12
+let birdHeight = 60;
 let birdX = boardWidth/8;
 let birdY = boardHeight/2;
 let birdImg;
@@ -21,7 +21,7 @@ let bird = {
 
 //pipes
 let pipeArray = [];
-let pipeWidth = 64; //width/height ratio = 384/3072 = 1/8
+let pipeWidth = 80; /// 64/width/height ratio = 384/3072 = 1/8
 let pipeHeight = 512;
 let pipeX = boardWidth;
 let pipeY = 0;
@@ -37,35 +37,81 @@ let gravity = 0.4;
 let gameOver = false;
 let score = 0;
 
+function changeImage(imageSrc) {
+    var imgElement = document.getElementById('yappy-win');
+    imgElement.src = imageSrc; // Replace 'new-image.jpg' with the path to the new image
+}
+
+
 window.onload = function() {
+    changeImage("yappy.png")
     board = document.getElementById("board");
     board.height = boardHeight;
     board.width = boardWidth;
     context = board.getContext("2d"); //used for drawing on the board
 
-    //draw flappy bird
-    // context.fillStyle = "green";
-    // context.fillRect(bird.x, bird.y, bird.width, bird.height);
+    // Array of bird images
+    let birdImages = ["./Yappysix.png", "./Yappythree.png", "./Yappytwo.png",  "./Yappyfour.png", "./Yappyfive.png", "./Yappysix.png", "./Yappyseven.png", "./Yappyeight.png", "./Yappynine.png"];
+    let currentBirdImageIndex = 0;
 
-    //load images
-    birdImg = new Image();
-    birdImg.src = "./flappybird.png";
-    birdImg.onload = function() {
-        context.drawImage(birdImg, bird.x, bird.y, bird.width, bird.height);
+    // Function to change bird image
+    function changeBirdImage() {
+        currentBirdImageIndex = (currentBirdImageIndex + 1) % birdImages.length;
+        birdImg.src = birdImages[currentBirdImageIndex];
     }
 
+    // Load bird image
+    birdImg = new Image();
+    birdImg.src = birdImages[currentBirdImageIndex];
+    birdImg.onload = function() {
+        context.drawImage(birdImg, bird.x, bird.y, bird.width, bird.height);
+    };
+
     topPipeImg = new Image();
-    topPipeImg.src = "./toppipe.png";
+    topPipeImg.src = "./PSL_down.png";
 
     bottomPipeImg = new Image();
-    bottomPipeImg.src = "./bottompipe.png";
+    bottomPipeImg.src = "./PSL.png";
+
+    // Change bird image every 10 seconds (10000 ms)
+    setInterval(changeBirdImage, 2000);
 
     requestAnimationFrame(update);
-    setInterval(placePipes, 1500); //every 1.5 seconds
+    setInterval(placePipes, 2000); // every 1.5 seconds
     document.addEventListener("keydown", moveBird);
 }
 
+// window.onload = function() {
+//     board = document.getElementById("board");
+//     board.height = boardHeight;
+//     board.width = boardWidth;
+//     context = board.getContext("2d"); //used for drawing on the board
+
+//     //draw flappy bird
+//     // context.fillStyle = "green";
+//     // context.fillRect(bird.x, bird.y, bird.width, bird.height);
+
+//     //load images
+//     birdImg = new Image();
+//     birdImg.src = "./Yappy.jpg";
+//     birdImg.onload = function() {
+//         context.drawImage(birdImg, bird.x, bird.y, bird.width, bird.height);
+//     }
+
+//     topPipeImg = new Image();
+//     topPipeImg.src = "./toppipe.png";
+
+//     bottomPipeImg = new Image();
+//     bottomPipeImg.src = "./bottompipe.png";
+
+//     requestAnimationFrame(update);
+//     setInterval(placePipes, 1500); //every 1.5 seconds
+//     document.addEventListener("keydown", moveBird);
+// }
+
 function update() {
+
+
     requestAnimationFrame(update);
     if (gameOver) {
         return;
@@ -93,8 +139,10 @@ function update() {
             pipe.passed = true;
         }
 
+        changeImage("yappy.png")
         if (detectCollision(bird, pipe)) {
             gameOver = true;
+            changeImage("Pookie_angy.png")
         }
     }
 
@@ -109,7 +157,8 @@ function update() {
     context.fillText(score, 5, 45);
 
     if (gameOver) {
-        context.fillText("GAME OVER", 5, 90);
+        changeImage("Pookie_angy.jpg")
+        context.fillText("Loser 😡", 5, 90);
     }
 }
 

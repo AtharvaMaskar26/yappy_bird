@@ -1,9 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=The+Girl+Next+Door&display=swap');
+
+* {
+    background-color: #F4C2C2;
+}
 body {
     font-family:'Courier New', Courier, monospace;
     text-align: center;
 }
 
+.heading-yappy {
+    font-family: "The Girl Next Door", cursive;
+    font-weight: 1200;
+    font-style: normal;
+}
+
 #board {
     /* background-color: skyblue; */
     background-image: url("./flappybirdbg.png");
+}
+
+#yappy-win {
+    height: 400px;
+    margin-left: 100px;
+    border-radius: 50px;
 }
